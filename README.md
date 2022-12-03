@@ -1,5 +1,5 @@
 # PROACTIVE
-Artifacts related to the SIGKDD 2022 paper "Region Invariant Normalizing Flows for Mobility Transfer".
+Artifacts related to the SIGKDD 2022 paper ". ProActive: Self-Attentive Temporal Point Process Flows for Activity Sequences".
 
 ## Requirements
 Use a python-3.7 environment and install PyTorch v1.6.0 and TorchVision v0.4.2.
