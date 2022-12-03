@@ -30,7 +30,7 @@ To train PROACTIVE, use the provided bash script "run.sh". For example, to run t
 sh run.sh
 ```
 The contents of the script are self-explanatory. Once you run the code, PROACTIVE loads the dataset and predicts the accuracy, MAE, and GPA. The output will of the following format:
-![Alt text](bfast.png?raw=true "Output of PROACTIVE")
+![Alt text](bfast.jpg?raw=true "PROACTIVE")
 
 In detail, the metrics used are as follows
 - Acc = The accuracy of predicting the event types.
