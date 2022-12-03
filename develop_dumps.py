@@ -8,25 +8,23 @@ thresh = 0
 max_t = 0.0
 min_t = 10000.0
 
-with open('Datasets/'+folder+'/train_ev.txt', 'r') as in_file:
+with open('data/'+folder+'/train_ev.txt', 'r') as in_file:
 	eventTrain = [[int(y) for y in x.strip().split()] for x in in_file]
 
-with open('Datasets/'+folder+'/test_ev.txt', 'r') as in_file:
+with open('data/'+folder+'/test_ev.txt', 'r') as in_file:
 	eventTest = [[int(y) for y in x.strip().split()] for x in in_file]
 
-with open('Datasets/'+folder+'/train_ti.txt', 'r') as in_file:
+with open('data/'+folder+'/train_ti.txt', 'r') as in_file:
 	timeTrain = [[float(y) for y in x.strip().split()] for x in in_file]
 
-with open('Datasets/'+folder+'/test_ti.txt', 'r') as in_file:
+with open('data/'+folder+'/test_ti.txt', 'r') as in_file:
 	timeTest = [[float(y) for y in x.strip().split()] for x in in_file]
 
-with open('Datasets/'+folder+'/train_go.txt', 'r') as in_file:
+with open('data/'+folder+'/train_go.txt', 'r') as in_file:
 	goalTrain = [int(x) for x in in_file]
 
-with open('Datasets/'+folder+'/test_go.txt', 'r') as in_file:
+with open('data/'+folder+'/test_go.txt', 'r') as in_file:
 	goalTest = [int(x) for x in in_file]
-
-# pdb.set_trace()
 
 cat_list = []
 
@@ -66,51 +64,6 @@ for i in range(len(timeTest)):
 		timeTest[i][j] = new_val
 		eventTest[i][j] += incr 
 
-# try:
-# 	os.mkdir('Datasets/RMTPP_Scaled/'+folder)
-# except:
-# 	print(folder +" already there")
-
-# event_train = open('Datasets/RMTPP_Scaled/'+folder+'/event_train.txt', "w")
-# time_train = open('Datasets/RMTPP_Scaled/'+folder+'/time_train.txt', "w")
-# event_test = open('Datasets/RMTPP_Scaled/'+folder+'/event_test.txt', "w")
-# time_test = open('Datasets/RMTPP_Scaled/'+folder+'/time_test.txt', "w")
-
-# # Writing Train: RMTPP
-# for i in range(len(timeTrain)):
-# 	for j in range(len(timeTrain[i]) - 1):
-# 		event_train.write(str(eventTrain[i][j]))
-# 		event_train.write(" ")
-
-# 		time_train.write(str(timeTrain[i][j]))
-# 		time_train.write(" ")
-
-# 	event_train.write(str(eventTrain[i][j+1]))
-# 	time_train.write(str(timeTrain[i][j+1]))
-	
-# 	event_train.write("\n")
-# 	time_train.write("\n")
-
-# # Writing Test: RMTPP
-# for i in range(len(timeTest)):
-# 	for j in range(len(timeTest[i]) - 1):
-# 		event_test.write(str(eventTest[i][j]))
-# 		event_test.write(" ")
-
-# 		time_test.write(str(timeTest[i][j]))
-# 		time_test.write(" ")
-
-# 	event_test.write(str(eventTest[i][j+1]))
-# 	time_test.write(str(timeTest[i][j+1]))
-	
-# 	event_test.write("\n")
-# 	time_test.write("\n")
-
-# event_train.close()
-# time_train.close()
-# event_test.close()
-# time_test.close()
-
 def mk_dict(len_cats):
 	temp = {}
 	temp['test'] = []
@@ -120,14 +73,13 @@ def mk_dict(len_cats):
 	temp['dim_goals'] = len_goals
 	temp['train'] = []
 	temp['args'] = []
-	# temp['goals'] = []
 	return temp
 
 train_dict = mk_dict(len_cats)
 test_dict = mk_dict(len_cats)
 dev_dict = mk_dict(len_cats)
 
-# Writing Train
+# Writing Training Data
 train_dict['train'] = []
 for i in range(len(timeTrain)):
 	prev = 0
@@ -145,9 +97,8 @@ for i in range(len(timeTrain)):
 		prev = val
 		temp_list.append(temp_dict)
 	train_dict['train'].append(temp_list)
-	# train_dict['goals'].append(goalTrain[i])
 
-# Writing Test
+# Writing Testing Data
 test_dict['test'] = []
 for i in range(len(timeTest)):
 	prev = 0
@@ -165,36 +116,8 @@ for i in range(len(timeTest)):
 		prev = val
 		temp_list.append(temp_dict)
 	test_dict['test'].append(temp_list)
-	# test_dict['goals'].append(goalTest[i])
 
-# # Writing Dev: Neural Hawkes
-# len_dev = int(0.1 * len(timeTrain))
-# dev_dict['dev'] = []
-# for i in range(len_dev):
-# 	prev = 0
-# 	temp_list = []
-# 	for j in range(len(timeTrain[i])):
-# 		temp_dict = {}
-# 		val = timeTrain[i][j]
-# 		temp_dict['time_since_start'] = val
-# 		diff = val - prev
-# 		if diff <= 0.0:
-# 			diff = 0.00001
-# 		temp_dict['time_since_last_event'] = diff
-# 		temp_dict['type_event'] = eventTrain[i][j] - 1
-# 		prev = val
-# 		temp_list.append(temp_dict)
-# 	dev_dict['dev'].append(temp_list)
-# 	dev_dict['goals'].append(goalTrain[i])
+pickle.dump(train_dict, open('data/'+folder+'/train.pkl', 'wb'))
+pickle.dump(test_dict, open('data/'+folder+'/test.pkl', 'wb'))
 
-try:
-	os.mkdir('Dataset_Dumps/'+folder)
-except:
-	print(folder +" already there")
-
-pickle.dump(train_dict, open('Dataset_Dumps/'+folder+'/train.pkl', 'wb'))
-pickle.dump(test_dict, open('Dataset_Dumps/'+folder+'/test.pkl', 'wb'))
-# pickle.dump(dev_dict, open('Dataset_Dumps/'+folder+'/dev.pkl', 'wb'))
-# pickle.dump(test_dict, open('Dataset_Dumps/'+folder+'/test1.pkl', 'wb'))
-
-print("Done for "+folder+" with num_cats "+str(len_cats) + " with num_goals "+str(len_goals))
+print("Finished Creating Dumps for "+folder)
