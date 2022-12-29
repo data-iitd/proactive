@@ -6,7 +6,7 @@ Use a python-3.7 environment and install PyTorch v1.6.0 and TorchVision v0.4.2. 
 
 ## Execution Instructions
 ### Dataset Format
-We have also provided a dataset used in the paper. For any new dataset, you need to structure it to different files containing the POI details and the mobility details of the users as follows:
+We have also provided a dataset used in the paper. For any new dataset, you need to structure it to different files containing the action sequences and the sequence goals as follows:
 ```
 test_ev.txt test_go.txt test_ti.txt train_ev.txt train_go.txt train_ti.txt
 ```
